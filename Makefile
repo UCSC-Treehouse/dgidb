@@ -10,12 +10,15 @@ up:
 	docker run -d  --name postgres \
 		-v `pwd`/postgres:/var/lib/postgresql/data \
 		-v `pwd`/dgidb:/dgidb \
+		-v `pwd`:/data \
 		postgres
 
 down:
 	docker stop postgres && docker rm postgres
 
 import:
+	# Give the docker a moment to spin up
+	sleep 10
 	# Import the dgidb and the fda list into postrgres
 	docker exec -it postgres psql -h localhost -U postgres -c "create database dgidb"
 	docker exec -it postgres psql -h localhost -U postgres -d dgidb -f /dgidb/structure.sql
@@ -25,6 +28,10 @@ import:
 	# docker exec -it postgres psql -h localhost -U postgres -d dgidb \
 	# 	-c "copy fda_drugs from '/data/fda_drugs.csv'"
 	
-extract:
+extract_fda:
 	docker exec -it postgres psql -h localhost -U postgres -d dgidb \
 		-t -A -F'	' -f /data/extract.sql -o /data/fda_drugs.gmt
+
+extract:
+	docker exec -it postgres psql -h localhost -U postgres -d dgidb \
+		-t -A -F'	' -f /data/extract-druggable-genes.sql -o /data/druggable_genes.tsv
