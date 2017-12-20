@@ -1,4 +1,11 @@
 # dgidb
+
+### IMPORTANT NOTE:
+This script **does not duplicate** the DGIDB API for these databases and should not be used as an exact replacement.
+For discussion, see https://github.com/UCSC-Treehouse/protocol/issues/59 .
+
+--------
+
 Scripts to extract gene to drug interactions from (dgidb)[http://www.dgidb.org/] into tsv for use in
 the Treehouse tertiary analysis protocol.
 
